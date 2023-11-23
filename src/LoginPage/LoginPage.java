@@ -19,7 +19,9 @@ public class LoginPage extends JFrame {
     // Phương thức kiểm tra tài khoản và mật khẩu
  	private String authenticateUser(String username, String password) {
  	    String role = null;
-
+ 	    
+ 	    String a="SELECT * FROM useraccount";
+ 	    
  	    String query = "SELECT role FROM useraccount WHERE useraccount = ? AND password = ?";
  	    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "mysql");
  	         PreparedStatement pstmt = conn.prepareStatement(query)) {
