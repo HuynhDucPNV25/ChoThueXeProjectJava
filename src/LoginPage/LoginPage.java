@@ -2,11 +2,16 @@ package LoginPage;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import AdminPages.AdminPage;
+import BookingPage.Booking;
 import HomePage.HomePage;
 
 public class LoginPage extends JFrame {
@@ -17,29 +22,32 @@ public class LoginPage extends JFrame {
     private JPasswordField passwordField;
 
     // Phương thức kiểm tra tài khoản và mật khẩu
- 	private String authenticateUser(String username, String password) {
- 	    String role = null;
- 	    
- 	    String a="SELECT * FROM useraccount";
- 	    
- 	    String query = "SELECT role FROM useraccount WHERE useraccount = ? AND password = ?";
- 	    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "mysql");
- 	         PreparedStatement pstmt = conn.prepareStatement(query)) {
+    private Map<String, Object> authenticateUser(String username, String password) {
+        Map<String, Object> result = new HashMap<>();
+        String role = null;
+        int userId = -1;
 
- 	        pstmt.setString(1, username);
- 	        pstmt.setString(2, password);
+        String query = "SELECT idnew_table, role FROM useraccount WHERE useraccount = ? AND password = ?";
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "mysql");
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
 
- 	        try (ResultSet rs = pstmt.executeQuery()) {
- 	            if (rs.next()) {
- 	                role = rs.getString("role");
- 	            }
- 	        }
- 	    } catch (SQLException e) {
- 	        e.printStackTrace();
- 	    }
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
 
- 	    return role;
- 	}
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getInt("idnew_table");
+                    role = rs.getString("role");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        result.put("role", role);
+        result.put("idnew_table", userId);
+        return result;
+    }
  	
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -87,7 +95,7 @@ public class LoginPage extends JFrame {
         textField.setColumns(10);
 
         JLabel lblNewLabel_3 = new JLabel("Mật Khẩu:");
-        lblNewLabel_3.setBounds(143, 248, 103, 29);
+lblNewLabel_3.setBounds(143, 248, 103, 29);
         lblNewLabel_3.setFont(new Font("Times New Roman", Font.PLAIN, 24));
         panel.add(lblNewLabel_3);
 
@@ -99,29 +107,43 @@ public class LoginPage extends JFrame {
         Button button = new Button("Login");
         button.setBounds(188, 320, 218, 34);
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	  String username = textField.getText(); // Lấy tên người dùng từ trường nhập liệu
-                  String password = new String(passwordField.getPassword()); // Lấy mật khẩu từ trường nhập liệu
+        	public void actionPerformed(ActionEvent e) {
+        	    String username = textField.getText();
+        	    String password = new String(passwordField.getPassword());
 
-                  // Gọi phương thức kiểm tra tài khoản và mật khẩu
-                  String role = authenticateUser(username, password);
-                  if (role != null) {
-                      if (role.equals("admin")) {
-                          // Nếu vai trò là "admin", chuyển đến trang chủ (homepage)
-                          HomePage homePage = new HomePage();
-                          homePage.setVisible(true);
-                          dispose(); // Ẩn trang đăng nhập
-                      } else {
-                          // Nếu vai trò không phải là "admin", chuyển đến trang Homepage
-                    	  HomePage homePage = new HomePage();
-                          homePage.setVisible(true);
-                          dispose(); // Ẩn trang đăng nhập
-                      }
-                  } else {
-                      // Nếu tài khoản hoặc mật khẩu không hợp lệ, hiển thị thông báo lỗi
-                      JOptionPane.showMessageDialog(LoginPage.this, "Tài khoản hoặc mật khẩu không đúng", "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
-                  }
-              }
+        	    try {
+        	        Map<String, Object> role = authenticateUser(username, password);
+
+        	        if (role != null) {
+        	            navigateToHomePage(role);
+        	        } else {
+        	            showLoginError();
+        	        }
+        	    } catch (IOException ex) {
+        	        handleException("Error during login", ex);
+        	        showErrorMessage("Lỗi kết nối CSDL", "Lỗi đăng nhập");
+        	    }
+        	}
+
+        	private void navigateToHomePage(Map<String, Object> role) throws IOException {
+        	    String userRole = (String) role.get("role");
+        	    int userId = (int) role.get("idnew_table");
+
+        	    if ("admin".equals(userRole)) {
+        	    	System.out.println(userId);
+        	        AdminPage AdminPage = new AdminPage();
+        	        AdminPage.setVisible(true);					
+        	    } else {
+        	        HomePage homePage = new HomePage(userId);
+        	        
+        	        homePage.setVisible(true);
+        	    }
+        	    dispose(); // Close the login page
+        	}
+
+        	private void showLoginError() {
+        	    JOptionPane.showMessageDialog(LoginPage.this, "Tài khoản hoặc mật khẩu không đúng", "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
+        	}
           });
         
         button.setActionCommand("");
@@ -147,4 +169,14 @@ public class LoginPage extends JFrame {
         });
         panel.add(button_1);
     }
+
+	protected void showErrorMessage(String string, String string2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void handleException(String string, Exception ex) {
+		// TODO Auto-generated method stub
+		
+	}
 }

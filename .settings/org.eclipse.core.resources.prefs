@@ -1,6 +1,11 @@
 eclipse.preferences.version=1
+encoding//src/AdminPages/AdminPage.java=UTF-8
 encoding//src/BookingPage/Booking.java=UTF-8
+encoding//src/BookingPage/CongratulationsPage.java=UTF-8
+encoding//src/BookingPage/payment.java=UTF-8
 encoding//src/HomePage/HomePage.java=UTF-8
+encoding//src/HomePage/detail.java=UTF-8
 encoding//src/LoginPage/LoginPage.java=UTF-8
 encoding//src/LoginPage/RegisterPage.java=UTF-8
+encoding//src/user/UserProfile.java=UTF-8
 encoding/<project>=windows-1258
