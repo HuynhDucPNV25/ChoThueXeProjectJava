@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import AdminPages.AdminPage;
-import BookingPage.Booking;
 import HomePage.HomePage;
 
 public class LoginPage extends JFrame {
@@ -113,7 +112,7 @@ lblNewLabel_3.setBounds(143, 248, 103, 29);
 
         	    try {
         	        Map<String, Object> role = authenticateUser(username, password);
-
+        	        System.out.println(role);
         	        if (role != null) {
         	            navigateToHomePage(role);
         	        } else {
@@ -128,21 +127,25 @@ lblNewLabel_3.setBounds(143, 248, 103, 29);
         	private void navigateToHomePage(Map<String, Object> role) throws IOException {
         	    String userRole = (String) role.get("role");
         	    int userId = (int) role.get("idnew_table");
-
+        	    System.out.println(userRole);
         	    if ("admin".equals(userRole)) {
-        	    	System.out.println(userId);
+        	    	
         	        AdminPage AdminPage = new AdminPage();
         	        AdminPage.setVisible(true);					
+        	    } else if (userRole==null) {
+        	       showLoginError();
+        	       
         	    } else {
-        	        HomePage homePage = new HomePage(userId);
-        	        
-        	        homePage.setVisible(true);
+        	    	HomePage homePage = new HomePage(userId);
+         	        homePage.setVisible(true);
         	    }
         	    dispose(); // Close the login page
         	}
 
         	private void showLoginError() {
         	    JOptionPane.showMessageDialog(LoginPage.this, "Tài khoản hoặc mật khẩu không đúng", "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
+        	    LoginPage loginPage = new LoginPage();
+    	        loginPage.setVisible(true);		
         	}
           });
         

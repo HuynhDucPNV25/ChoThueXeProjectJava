@@ -47,14 +47,7 @@ public class payment extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-//		// tiêu đề trang
-//		JLabel title = new JLabel("Payment");
-//		title.setFont(new Font("Tahoma", Font.PLAIN, 26));
-//		title.setBounds(500, 0, 100, 30);
-//        contentPane.add(title);
-        
-        // 
-        
+		
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
