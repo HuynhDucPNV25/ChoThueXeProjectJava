@@ -35,17 +35,6 @@ public class detail extends JFrame {
     private JButton backButton;
     private JButton rentButton;
     private static int userId;
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                int selectedIndex = Integer.parseInt(args[0]);
-                detail frame = new detail(selectedIndex,userId);
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
 
     public detail(int selectedIndex, int userId) {
     	this.userId=userId;

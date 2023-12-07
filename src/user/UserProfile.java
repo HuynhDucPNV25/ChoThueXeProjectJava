@@ -19,14 +19,13 @@ public class UserProfile extends JFrame {
     public UserProfile(int id) {
         // Thiết lập cấu hình JFrame
         setTitle("User Profile");
-        setSize(532, 550); // Tăng chiều cao lên 550 để tạo không gian cho JPanel
+        setSize(532, 650); // Tăng chiều cao lên 550 để tạo không gian cho JPanel
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setLayout(new BorderLayout()); // Sử dụng BorderLayout
 
         // Tạo JPanel để chứa JLabel và đặt kích thước cho nó
         JPanel topPanel = new JPanel();
-        topPanel.setPreferredSize(new Dimension(getWidth(), 100)); // Đặt kích thước 50px chiều cao
         topPanel.setBackground(Color.lightGray); // Đặt màu nền
 
         JLabel lblTitle = new JLabel("User Profile");
@@ -75,8 +74,8 @@ public class UserProfile extends JFrame {
                 URL url1 = new URL(imgUrl);
                 ImageIcon imageIcon = new ImageIcon(url1);
                 Image image = imageIcon.getImage();
-                int desiredWidth = 200; // Chiều rộng mong muốn
-                int desiredHeight = 200; // Chiều cao mong muốn
+                int desiredWidth = 100; // Chiều rộng mong muốn
+                int desiredHeight = 100; // Chiều cao mong muốn
                 Image scaledImage = image.getScaledInstance(desiredWidth, desiredHeight, Image.SCALE_SMOOTH);
                 ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
                 lblImage = new JLabel(scaledImageIcon);
